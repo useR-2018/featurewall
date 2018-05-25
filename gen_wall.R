@@ -6,7 +6,7 @@ library(purrr)
 sticker_row_size = 10 # The number of stickers in the longest row
 sticker_width = 200 # The width of each sticker in pixels
 
-# Script
+# Load stickers
 sticker_files <- list.files("stickers")
 stickers <- file.path("stickers", sticker_files) %>% 
   map(image_read) %>%
@@ -38,6 +38,7 @@ sticker_height <- stickers %>%
   map(image_info) %>%
   map_dbl("height") %>%
   median
+
 stickers <- stickers %>%
   map(image_resize, paste0(sticker_width, "x", sticker_height, "!"))
 
@@ -45,10 +46,9 @@ stickers <- stickers %>%
 sticker_col_size <- ceiling(NROW(image_info(stickers))/(sticker_row_size-0.5))
 canvas <- image_blank(sticker_row_size*sticker_width, sticker_col_size*sticker_height/1.33526, "white")
 
-# Compute stickers by row
+# Arrange rows of stickers into images
 row_lens <- rep(c(sticker_row_size,sticker_row_size-1), length.out=sticker_col_size)
 row_lens[length(row_lens)] <- row_lens[length(row_lens)]  - (length(stickers) - sum(row_lens))
-
 sticker_rows <- map2(row_lens, cumsum(row_lens),
      ~ seq(.y-.x+1, by = 1, length.out = .x)) %>%
   map(~ stickers[.x] %>%
