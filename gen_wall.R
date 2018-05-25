@@ -57,11 +57,11 @@ sticker_rows <- map2(row_lens, cumsum(row_lens),
 
 # Add stickers to canvas
 canvas <- image_blank(sticker_row_size*sticker_width, sticker_col_size*sticker_height, "white")
-for(row in seq_along(sticker_rows)){
-  canvas <- image_composite(
-    canvas, sticker_rows[[row]],
-    offset = paste0("+", ((row-1)%%2)*sticker_width/2, "+", (row-1)*sticker_height/1.33526)
-  )
-}
-canvas
+canvas <- reduce2(sticker_rows, seq_along(sticker_rows), 
+          ~ image_composite(
+            ..1, ..2,
+            offset = paste0("+", ((..3-1)%%2)*sticker_width/2, "+", (..3-1)*sticker_height/1.33526)
+          ),
+          .init = canvas)
+
 image_write(canvas, "featurewall.png", format = "png")
