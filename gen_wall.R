@@ -19,7 +19,7 @@ low_res <- stickers %>%
 which(low_res)
 
 stickers <- stickers %>%
-  map(image_scale, "200")
+  map(image_scale, sticker_width)
 
 # Incorrectly sized stickers
 bad_size <- stickers %>%
