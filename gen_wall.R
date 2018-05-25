@@ -60,7 +60,8 @@ gen_hex_wall <- function(path, sticker_row_size = 10, sticker_width = 200, remov
           image_append)
   
   # Add stickers to canvas
-  canvas <- image_blank(sticker_row_size*sticker_width, sticker_col_size*sticker_height, "white")
+  canvas <- image_blank(sticker_row_size*sticker_width, 
+                        sticker_height + (sticker_col_size-1)*sticker_height/1.33526, "white")
   reduce2(sticker_rows, seq_along(sticker_rows), 
           ~ image_composite(
             ..1, ..2,
