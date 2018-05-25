@@ -64,7 +64,7 @@ gen_hex_wall <- function(path, sticker_row_size = 10, sticker_width = 200, remov
   reduce2(sticker_rows, seq_along(sticker_rows), 
           ~ image_composite(
             ..1, ..2,
-            offset = paste0("+", ((..3-1)%%2)*sticker_width/2, "+", (..3-1)*sticker_height/1.33526)
+            offset = paste0("+", ((..3-1)%%2)*sticker_width/2, "+", round((..3-1)*sticker_height/1.33526))
           ),
           .init = canvas)
 }
